@@ -11,7 +11,7 @@ using namespace std;
 
 #define pseudo_random_256b "aePcvgOuOJ1ubrOKwUZZUemayZPeGwtp"
 
-void printData(vector<bitset<8>> input) {
+void printData(vector<bitset<8>> &input) {
     cout << endl << "Dvejatainė reprezentacija:" << endl;
     for(const auto& byte : input) cout << byte.to_string() << "'";
     cout << endl << "Hex reprezentacija:" << endl << "0x";
@@ -72,20 +72,34 @@ string getInputString() {
     }
 }
 
-void readInput(vector<bitset<8>> &input, string inputText) {
+void readInput(vector<bitset<8>> &arr, string inputText) {
     for(char c : inputText) {
         bitset<8> b((unsigned char)c);
-        input.push_back(b);
+        arr.push_back(b);
     }
-    input.shrink_to_fit();
+    arr.shrink_to_fit();
 }
 
 int main() {
+    // ivestis
     vector<bitset<8>> randomStr;
     vector<bitset<8>> userInput;
 
-    // readInput(userInput, getInputString());
+    readInput(userInput, getInputString());
     readInput(randomStr, pseudo_random_256b);
 
-    printData(randomStr);
+    // Maišymas
+    // 1. Užtikrinti kad mažas pakitimas reiškia "daug" avalanche effect
+    printData(userInput);
+
+    for (auto it = userInput.begin(); it != userInput.end(); it++) {
+        int index = distance(userInput.begin(), it);
+        it->flip();
+        *it = it->to_ulong() * (userInput.size() * 8) % 255;
+
+        auto oppositeIt = (userInput.end() - index);
+        *oppositeIt = (*oppositeIt^*it);
+    }
+
+    printData(userInput);
 }

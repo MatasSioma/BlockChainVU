@@ -6,6 +6,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <math.h>
 
 using namespace std;
 
@@ -80,6 +81,12 @@ void readInput(vector<bitset<8>> &arr, string inputText) {
     arr.shrink_to_fit();
 }
 
+vector<bitset<8>> TransformTo256(vector<bitset<8>> &arr) {
+    for (int i = 0; i < floor(arr.size() / 32); i++) {
+        cout << "grupavimas" << endl;
+    }
+}
+
 int main() {
     // ivestis
     vector<bitset<8>> randomStr;
@@ -90,15 +97,21 @@ int main() {
 
     // Maišymas
     // 1. Užtikrinti kad mažas pakitimas reiškia "daug" avalanche effect
-    printData(userInput);
+    // printData(userInput);
 
     for (auto it = userInput.begin(); it != userInput.end(); it++) {
-        int index = distance(userInput.begin(), it);
         it->flip();
-        *it = it->to_ulong() * (userInput.size() * 8) % 255;
+        *it = it->to_ulong() * it->to_ulong() * (userInput.size() * 8) % 256;
+        
+        int index = distance(userInput.begin(), it);
+        auto oppositeIt = (userInput.end() - (index + 1));
+        *oppositeIt = (*oppositeIt|*it).flip();
 
-        auto oppositeIt = (userInput.end() - index);
-        *oppositeIt = (*oppositeIt^*it);
+        if(oppositeIt == it) {
+            bitset<8> checker("10101010");
+            for(int i = 0; i < userInput.size() % 2; i++) checker.flip();
+            *oppositeIt = *oppositeIt & checker;
+        }
     }
 
     printData(userInput);

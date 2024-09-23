@@ -9,8 +9,10 @@
 
 using namespace std;
 
+#define pseudo_random_256b "aePcvgOuOJ1ubrOKwUZZUemayZPeGwtp"
+
 void printData(vector<bitset<8>> input) {
-    cout << "Dvejatainė reprezentacija:" << endl;
+    cout << endl << "Dvejatainė reprezentacija:" << endl;
     for(const auto& byte : input) cout << byte.to_string() << "'";
     cout << endl << "Hex reprezentacija:" << endl << "0x";
     for(const auto& byte : input) cout << hex << setw(2) << setfill('0') << byte.to_ulong();
@@ -34,7 +36,7 @@ void pasirinktiEiga(string msg, int* option, int max) {
     }
 }
 
-void readInput(vector<bitset<8>> &input) {
+string getInputString() {
     int option;
     string inputText;
 
@@ -43,11 +45,7 @@ void readInput(vector<bitset<8>> &input) {
         cout << "Jūsų tekstas: " << endl;
         cin >> inputText;
 
-        for(char c : inputText) {
-            bitset<8> b((unsigned char)c);
-            input.push_back(b);
-        }
-        input.shrink_to_fit();
+        return inputText;
     } else {
         string inFileName;
         ifstream is;
@@ -70,20 +68,24 @@ void readInput(vector<bitset<8>> &input) {
         buffer << is.rdbuf();
         is.close();
 
-        while (buffer.get(c)) {
-            bitset<8> b((unsigned char)c);
-            input.push_back(b);
-        }
-        input.shrink_to_fit();
-        buffer.clear();
+        return buffer.str();
     }
 }
 
-int main() {
-    int option;
-    vector<bitset<8>> input;
-    
-    readInput(input);
+void readInput(vector<bitset<8>> &input, string inputText) {
+    for(char c : inputText) {
+        bitset<8> b((unsigned char)c);
+        input.push_back(b);
+    }
+    input.shrink_to_fit();
+}
 
-    printData(input);
+int main() {
+    vector<bitset<8>> randomStr;
+    vector<bitset<8>> userInput;
+
+    // readInput(userInput, getInputString());
+    readInput(randomStr, pseudo_random_256b);
+
+    printData(randomStr);
 }

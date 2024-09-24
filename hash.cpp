@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <math.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -81,27 +82,46 @@ void readInput(vector<bitset<8>> &arr, string inputText) {
     arr.shrink_to_fit();
 }
 
-vector<bitset<8>> TransformTo256(vector<bitset<8>> &arr) {
-    for (int i = 0; i < floor(arr.size() / 32); i++) {
-        cout << "grupavimas" << endl;
+vector<bitset<8>> TransformTo256(vector<bitset<8>> arr) {
+    if(arr.size() % 32 != 0) {
+        int i = 0;
+        while (arr.size() % 32 != 0) {
+            arr.push_back(arr.at(i).flip());
+            i++;
+        }
+    } else if (arr.size() == 32) {
+        return arr;
     }
+
+    vector<bitset<8>> newArr;
+    newArr.reserve(32);
+
+    for (int i = 0; i < 32; i++) {
+        newArr.push_back(arr.at(i) ^ arr.at(i + 32));
+    }
+
+    if (arr.size() > 64) {
+        newArr.insert(newArr.end(), arr.begin() + 64, arr.end());
+    }
+
+    return TransformTo256(newArr);
+
 }
 
 int main() {
     // ivestis
-    vector<bitset<8>> randomStr;
-    vector<bitset<8>> userInput;
+    vector<bitset<8>> randomStr, userInput, output(32);
 
     readInput(userInput, getInputString());
     readInput(randomStr, pseudo_random_256b);
 
-    // Maišymas
-    // 1. Užtikrinti kad mažas pakitimas reiškia "daug" avalanche effect
-    // printData(userInput);
+    int inputSize = userInput.size();
+
+    userInput = TransformTo256(userInput);
 
     for (auto it = userInput.begin(); it != userInput.end(); it++) {
         it->flip();
-        *it = it->to_ulong() * it->to_ulong() * (userInput.size() * 8) % 256;
+        *it = it->to_ulong() * it->to_ulong() * (inputSize * 8) % 256;
         
         int index = distance(userInput.begin(), it);
         auto oppositeIt = (userInput.end() - (index + 1));
@@ -112,6 +132,12 @@ int main() {
             for(int i = 0; i < userInput.size() % 2; i++) checker.flip();
             *oppositeIt = *oppositeIt & checker;
         }
+    }
+
+    int i = 0;
+    for (auto it = output.begin(); it != output.end(); it++) {
+        *it = (*it^userInput[i]).flip();
+        i++;
     }
 
     printData(userInput);

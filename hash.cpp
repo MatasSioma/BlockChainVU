@@ -89,7 +89,7 @@ vector<bitset<8>> TransformTo256(vector<bitset<8>> arr) {
             arr.push_back(arr.at(i).flip());
             i++;
         }
-    } else if (arr.size() == 32) {
+    } if (arr.size() == 32) {
         return arr;
     }
 
@@ -108,6 +108,23 @@ vector<bitset<8>> TransformTo256(vector<bitset<8>> arr) {
 
 }
 
+//Mazas pokytis reiskia daug (avalanche effect) (teoriskai)
+void magnify(vector<bitset<8>> &arr) {
+    for (auto it = arr.begin(); it != arr.end(); it++) {
+        *it = it->to_ulong() * it->to_ulong() % 256;
+        
+        int index = distance(arr.begin(), it);
+        auto oppositeIt = (arr.end() - (index + 1));
+        *oppositeIt = (*oppositeIt^*it).flip();
+
+        if(oppositeIt == it) {
+            bitset<8> checker("10101010");
+            for(int i = 0; i < arr.size() % 2; i++) checker.flip();
+            *oppositeIt = *oppositeIt & checker;
+        }
+    }
+}
+
 int main() {
     // ivestis
     vector<bitset<8>> randomStr, userInput, output(32);
@@ -115,30 +132,14 @@ int main() {
     readInput(userInput, getInputString());
     readInput(randomStr, pseudo_random_256b);
 
-    int inputSize = userInput.size();
-
+    magnify(userInput);
     userInput = TransformTo256(userInput);
 
-    for (auto it = userInput.begin(); it != userInput.end(); it++) {
-        it->flip();
-        *it = it->to_ulong() * it->to_ulong() * (inputSize * 8) % 256;
-        
-        int index = distance(userInput.begin(), it);
-        auto oppositeIt = (userInput.end() - (index + 1));
-        *oppositeIt = (*oppositeIt|*it).flip();
-
-        if(oppositeIt == it) {
-            bitset<8> checker("10101010");
-            for(int i = 0; i < userInput.size() % 2; i++) checker.flip();
-            *oppositeIt = *oppositeIt & checker;
-        }
-    }
-
-    int i = 0;
-    for (auto it = output.begin(); it != output.end(); it++) {
-        *it = (*it^userInput[i]).flip();
-        i++;
-    }
+    // int i = 0;
+    // for (auto it = output.begin(); it != output.end(); it++) {
+    //     *it = (*it^userInput[i]);
+    //     i++;
+    // }
 
     printData(userInput);
 }

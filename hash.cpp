@@ -75,6 +75,11 @@ string getInputString() {
 }
 
 void readInput(vector<bitset<8>> &arr, string inputText) {
+    if(inputText == "") {
+        vector<bitset<8>> empty(32);
+        arr = empty;
+        return;
+    }
     for(char c : inputText) {
         bitset<8> b((unsigned char)c);
         arr.push_back(b);
@@ -132,14 +137,15 @@ int main() {
     readInput(userInput, getInputString());
     readInput(randomStr, pseudo_random_256b);
 
-    magnify(userInput);
     userInput = TransformTo256(userInput);
 
-    // int i = 0;
-    // for (auto it = output.begin(); it != output.end(); it++) {
-    //     *it = (*it^userInput[i]);
-    //     i++;
-    // }
+    magnify(userInput);
+    int i = 0;
+    for (auto it = output.begin(); it != output.end(); it++) {
+        *it = (*it^userInput[i]);
+        i++;
+    }
+    magnify(output);
 
-    printData(userInput);
+    printData(output);
 }

@@ -28,8 +28,11 @@ Gauname rezultatą, kuris vėl praleidžimas per magnify() funkcija.
 
 ## Analizė
 
-4 eksperimentas:
-![alt text](v0.1-konstitucija.png)
+1-2 eksperimentas:
+Panaudojant testinius failus duomenys direktorijoje, hash'ai yra deterministiniai ir visada yra 256 bit'ų ilgio.
+
+3 eksperimentas:
+![3 statistika](v0.1-konstitucija.png)
 
 Vaizduojamas logoritminis (base 2) ir tiesinis grafikas (x ašies reikšmės)
 
@@ -39,12 +42,27 @@ log(n) - TransformTo256()
 
 Taigi ne pats blogiausias variantas, bet ir ne geriausias.
 
-5-6 Eksperimentas: poros.cpp
+4-5 Eksperimentas: poros.cpp MatchingPairsTest()
 make poros
 ./poros
 Generuojamos porų sk ir ilgis pagal aprašytas rekomendacijas.
 Paleidus testą 5 kart, sutampančių hash'ų visada - 0
 
-Problemos:
-Pakeitus "mažą" dalį įvesties hash'as nepasikeičia kardinaliai. T.y. Matomi pasikartojantys byte'ai. Visgi, hash'as nėra tas pats.
+6 Eksperimentas: poros.cpp AvalancheEffectTest()
+Bitų lygio Nepanašumas: 
+Minimum: 0 bitai
+Maximum: 25 bitai
+Average: 5.43657 bitai
+
+Hex lygio Nepanašumas: 
+Minimum: 0 hex skaitmenys
+Maximum: 3 hex skaitmenys
+Average: 0.08029 hex skaitmenys
+
+Taigi, pakeitus "mažą" dalį įvesties hash'as nepasikeičia kardinaliai. T.y. Matomi pasikartojantys byte'ai.
+
+7:
+Stiprybės - atitinka "bazinius" reikalivimus: ilgis visada 256, funkcija deterministinė, O(2nlog(n)) - ne pats geriausias, bet ir ne blogiausias variantas.
+
+Trūkumai - pakeitus mažą dalį įvesties, išvestis nepasikeičia kardinaliai - neatitinka "avalanche effect" reikalavimui Kaltininkai - TranformTo256, magnify() funkcijos....
 

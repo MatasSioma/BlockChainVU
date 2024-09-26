@@ -45,6 +45,84 @@ void matchingPairsTest() {
     cout << "iš " << lineNum * 4 << " porų" << endl;
 }
 
+int BitDiff(vector<bitset<8>>& hash1, vector<bitset<8>>& hash2) {
+    int diffCount = 0;
+    for (int i = 0; i < 32; i++) {
+        for(int b = 0; b < 8; b++) {
+            if (hash1[i].test(b) != hash2[i].test(b)) {
+                diffCount++;
+            }
+        }
+    }
+    return diffCount;
+}
+
+int HexDiff(vector<bitset<8>>& hash1, vector<bitset<8>>& hash2) {
+    int diffCount = 0;
+    for (int i = 0; i < 32; i++) {
+        for(int b = 0; b < 2; b++) {
+            if (hash1[i].test(0 + b*4) != hash2[i].test(0 + b*4) &&
+                hash1[i].test(1 + b*4) != hash2[i].test(1 + b*4) &&
+                hash1[i].test(2 + b*4) != hash2[i].test(2 + b*4) &&
+                hash1[i].test(3 + b*4) != hash2[i].test(3 + b*4)
+            ) {
+                diffCount++;
+            }
+        }
+    }
+    return diffCount;
+}
+
+void avalancheEffectTest() {
+    srand(time(nullptr));
+    int pairCount = 100000;
+    int strLength = 500;
+    vector<int> bitDissimilarity;
+    vector<int> hexDissimilarity;
+
+    int minBitDiff = strLength * 8, maxBitDiff = 0, totalBitDiff = 0;
+    int minHexDiff = strLength * 2, maxHexDiff = 0, totalHexDiff = 0;
+
+    for (int i = 0; i < pairCount; i++) {
+        string baseString = generateRandomString(strLength);
+
+        string modifiedString = baseString;
+        int changeIndex = rand() % strLength;
+        modifiedString[changeIndex] = (char) rand() % 26 + 61;
+
+        vector<bitset<8>> hash1 = hashStr(baseString);
+        vector<bitset<8>> hash2 = hashStr(modifiedString);
+
+        int bitDiff = BitDiff(hash1, hash2);
+        int hexDiff = HexDiff(hash1, hash2);
+
+        bitDissimilarity.push_back(bitDiff);
+        hexDissimilarity.push_back(hexDiff);
+
+        minBitDiff = min(minBitDiff, bitDiff);
+        maxBitDiff = max(maxBitDiff, bitDiff);
+        totalBitDiff += bitDiff;
+
+        minHexDiff = min(minHexDiff, hexDiff);
+        maxHexDiff = max(maxHexDiff, hexDiff);
+        totalHexDiff += hexDiff;
+    }
+
+    double avgBitDiff = static_cast<double>(totalBitDiff) / pairCount;
+    double avgHexDiff = static_cast<double>(totalHexDiff) / pairCount;
+
+    cout << "Bitų lygio Nepanašumas: " << endl;
+    cout << "Minimum: " << minBitDiff << " bitai" << endl;
+    cout << "Maximum: " << maxBitDiff << " bitai" << endl;
+    cout << "Average: " << avgBitDiff << " bitai" << endl;
+
+    cout << "\nHex lygio Nepanašumas: " << endl;
+    cout << "Minimum: " << minHexDiff << " hex skaitmenys" << endl;
+    cout << "Maximum: " << maxHexDiff << " hex skaitmenys" << endl;
+    cout << "Average: " << avgHexDiff << " hex skaitmenys" << endl;
+}
+
 int main() {
-    matchingPairsTest();
+    // matchingPairsTest();
+    avalancheEffectTest();
 }

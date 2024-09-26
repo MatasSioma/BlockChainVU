@@ -9,15 +9,20 @@
 #include <math.h>
 #include <algorithm>
 
+#include "timer.h"
+#include "hash.h"
+
 using namespace std;
 
-#define pseudo_random_256b "aePcvgOuOJ1ubrOKwUZZUemayZPeGwtp"
-
-void printData(vector<bitset<8>> &input) {
-    cout << endl << "Dvejatainė reprezentacija:" << endl;
-    for(const auto& byte : input) cout << byte.to_string() << "'";
+void printHex(vector<bitset<8>> &input) {
     cout << endl << "Hex reprezentacija:" << endl << "0x";
     for(const auto& byte : input) cout << hex << setw(2) << setfill('0') << byte.to_ulong();
+    cout << endl;
+}
+
+void printBin(vector<bitset<8>> &input) {
+    cout << endl << "Dvejatainė reprezentacija:" << endl;
+    for(const auto& byte : input) cout << byte.to_string() << "'";
     cout << endl;
 }
 
@@ -51,7 +56,6 @@ string getInputString() {
     } else {
         string inFileName;
         ifstream is;
-        char c;
         
         while(true) {
             try {
@@ -66,12 +70,43 @@ string getInputString() {
         }
 
         stringstream buffer;
-            
-        buffer << is.rdbuf();
-        is.close();
+        string result;
+        string line;
 
-        return buffer.str();
+        option = 0;
+        cout << "kiek eilučių nuskaityti? (0 - visas): ";
+        cin >> option;
+        cout << endl;
+
+        if (option == 0) {
+            buffer << is.rdbuf();
+            is.close();
+            return buffer.str();
+        } else {
+            for (int i = 0; i < option; ++i) {
+                if (getline(is, line)) {
+                    result += line + "\n";
+                } else break;
+            }
+            is.close();
+            return result;
+        }
     }
+}
+
+string getKonstitucija(int lineNum) {
+    ifstream is;
+    string line, result;
+    is.open("duomenys/konstitucija.txt");
+
+    for (int i = 0; i < lineNum; ++i) {
+        if (getline(is, line)) {
+            result += line + "\n";
+        } else break;
+    }
+    is.close();
+    return result;
+
 }
 
 void readInput(vector<bitset<8>> &arr, string inputText) {
@@ -130,22 +165,23 @@ void magnify(vector<bitset<8>> &arr) {
     }
 }
 
-int main() {
-    // ivestis
-    vector<bitset<8>> randomStr, userInput, output(32);
-
-    readInput(userInput, getInputString());
-    readInput(randomStr, pseudo_random_256b);
-
-    userInput = TransformTo256(userInput);
-
-    magnify(userInput);
+void joinTwoArr(vector<bitset<8>> &arr, vector<bitset<8>> &output) {
     int i = 0;
     for (auto it = output.begin(); it != output.end(); it++) {
-        *it = (*it^userInput[i]);
+        *it = (*it^arr[i]);
         i++;
     }
+}
+
+vector<bitset<8>> hashStr(string &userInputStr) {
+    vector<bitset<8>> randomStr, userInput, output(32);
+
+    readInput(randomStr, pseudo_random_256b);
+    readInput(userInput, userInputStr);
+    userInput = TransformTo256(userInput);
+    magnify(userInput);
+    joinTwoArr(userInput, output);
     magnify(output);
 
-    printData(output);
+    return output;
 }

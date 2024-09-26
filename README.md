@@ -10,8 +10,8 @@ Transformuoja vector tipo bitų masyvą į 256 bitus (32 byte'us). Jei vector dy
 Jei dydis > 32, tuo pačiu pricipu kopijuoja elementus kol masyvo dydis yra 32 kartotinis. Tuomet rekursyviai apjungia pirmus 2 32 byte'ų blokus, kol masyvo ilgis tampa 32.
 
 magnify(&userInputData) //Kad mažas pokytis reikštų daug (avalanche effect)
-Kiekvieną bytę'ą pakelia kvadratu ir kaip naują reikšmę, į jo vietą, įrašo skaičiaus kavadarto liekana, dalinant iš 256 (užtikrinti kad skaičius nebus didesnis negu 8 byte'ai)
-Paskaičiuoja priešingą byte'o vietą masyve ir jam priskiria reikšmę, kuri yra loginės operacijos ~XOR (ne "exlusive" ARBA) rezultatas prišingam ir šiuo metu apdorojamam byte'ui.
+Kiekvieną bytę'ą pakelia kvadratu ir kaip naują reikšmę, į jo vietą, įrašo skaičiaus kavadarto liekana, dalinant iš 256 (užtikrinti kad skaičius nebus didesnis negu 8 byte'ai).
+Tuomet paskaičiuoja priešingą byte'o vietą masyve ir jam priskiria reikšmę, kuri yra loginės operacijos ~XOR (ne "exlusive" ARBA) rezultatas priešingam ir šiuo metu apdorojamam byte'ui.
 
 joinTwoArr(&arr, &output)
 Apjungia du masyvus naudojant bitwise XOR operaciją, ir rezultata išsaugo 'output' kontamąjame
@@ -28,12 +28,22 @@ Gauname rezultatą, kuris vėl praleidžimas per magnify() funkcija.
 
 ## Analizė
 
-4 ekspermentas:
+4 eksperimentas:
 ![alt text](v0.1-konstitucija.png)
+
+Vaizduojamas logoritminis (base 2) ir tiesinis grafikas (x ašies reikšmės)
 
 O(2nlog(n)) ?
 2n - 2 kart naudojama magnify()
 log(n) - TransformTo256()
+
+Taigi ne pats blogiausias variantas, bet ir ne geriausias.
+
+5-6 Eksperimentas: poros.cpp
+make poros
+./poros
+Generuojamos porų sk ir ilgis pagal aprašytas rekomendacijas.
+Paleidus testą 5 kart, sutampančių hash'ų visada - 0
 
 Problemos:
 Pakeitus "mažą" dalį įvesties hash'as nepasikeičia kardinaliai. T.y. Matomi pasikartojantys byte'ai. Visgi, hash'as nėra tas pats.

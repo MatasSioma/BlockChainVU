@@ -41,7 +41,7 @@ void matchingPairsTest() {
         }
     }
 
-    cout << "Sutampaciu porų hashų: "<< matching << endl;
+    cout << "Sutampančių porų hashų: "<< matching << endl;
     cout << "iš " << lineNum * 4 << " porų" << endl;
 }
 
@@ -61,9 +61,9 @@ int HexDiff(vector<bitset<8>>& hash1, vector<bitset<8>>& hash2) {
     int diffCount = 0;
     for (int i = 0; i < 32; i++) {
         for(int b = 0; b < 2; b++) {
-            if (hash1[i].test(0 + b*4) != hash2[i].test(0 + b*4) &&
-                hash1[i].test(1 + b*4) != hash2[i].test(1 + b*4) &&
-                hash1[i].test(2 + b*4) != hash2[i].test(2 + b*4) &&
+            if (hash1[i].test(0 + b*4) != hash2[i].test(0 + b*4) ||
+                hash1[i].test(1 + b*4) != hash2[i].test(1 + b*4) ||
+                hash1[i].test(2 + b*4) != hash2[i].test(2 + b*4) ||
                 hash1[i].test(3 + b*4) != hash2[i].test(3 + b*4)
             ) {
                 diffCount++;
@@ -106,6 +106,11 @@ void avalancheEffectTest() {
         minHexDiff = min(minHexDiff, hexDiff);
         maxHexDiff = max(maxHexDiff, hexDiff);
         totalHexDiff += hexDiff;
+
+        // if(bitDiff == 0 || hexDiff == 0) {
+        //     printHex(hash1);
+        //     printHex(hash2);
+        // }
     }
 
     double avgBitDiff = static_cast<double>(totalBitDiff) / pairCount;
@@ -125,4 +130,17 @@ void avalancheEffectTest() {
 int main() {
     // matchingPairsTest();
     avalancheEffectTest();
+
+    // string str1 = "adf";
+    // string str2 = "adg";
+
+    // vector<bitset<8>> hash1 = hashStr(str1);
+    // vector<bitset<8>> hash2 = hashStr(str2);
+
+    // int diff = HexDiff(hash1, hash2);
+
+    // printHex(hash1);
+    // printHex(hash2);
+
+    // cout << diff << endl;
 }

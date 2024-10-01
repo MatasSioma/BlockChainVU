@@ -122,7 +122,7 @@ void readInput(vector<bitset<8>> &arr, string inputText) {
 }
 
 bitset<8> SBoxTransformation(bitset<8> &input) {
-    return ((input << 1) ^ (input >> 3)) ^ ((input << 4) & (input >> 2));
+    return ((input << 2) ^ (input >> 3)) ^ ((input << 4) & (input >> 2));
 }
 
 vector<bitset<8>> TransformTo256(vector<bitset<8>> arr) {
@@ -155,42 +155,49 @@ vector<bitset<8>> TransformTo256(vector<bitset<8>> arr) {
 }
 
 //Mazas pokytis reiskia daug (avalanche effect)
-void magnify(vector<bitset<8>> &arr) {
+unsigned long int magnify(vector<bitset<8>> &arr) {
+    unsigned long int count = 0;
     for (auto it = arr.begin(); it != arr.end(); it++) {
-        *it = SBoxTransformation(*it);
-
         int index = distance(arr.begin(), it);
-        auto oppositeIt = (arr.end() - (index + 1));
+        *it = ((*it).to_ulong() * (*it).to_ulong() + index) % 256;
+        count += it->count();
 
+        auto oppositeIt = (arr.end() - (index + 1));
         *oppositeIt = SBoxTransformation((*oppositeIt ^ *it).flip());
 
         if (oppositeIt == it) {
             bitset<8> checker("10101010");
             *oppositeIt = SBoxTransformation((*oppositeIt ^ checker).flip());
         }
+        count += oppositeIt->count();
+
     }
+    return count;
 }
 
-void joinTwoArr(vector<bitset<8>> &arr, vector<bitset<8>> &output) {
-    int i = 0;
-    for (auto it = output.begin(); it != output.end(); it++) {
-        auto leftValue = it->to_ulong();
-        auto rightValue = arr[i].to_ulong();
-        *it = bitset<8>(((leftValue ^ rightValue) + ((rightValue << 3) | (rightValue >> 5))) % 256);
-        *it = SBoxTransformation(*it);
-
-        i++;
+vector<bitset<8>> joinTwoArr(vector<bitset<8>> &arr, vector<bitset<8>> &arr2) {
+    vector<bitset<8>> output(32);
+    for(int i = 0; i < 32; i++) {
+        auto leftValue = arr[i].to_ulong();
+        auto rightValue = arr2[i].to_ulong();
+        output.at(i) = bitset<8>(((leftValue ^ rightValue) + ((rightValue << 3) | (rightValue >> 5)) + 31) % 256);
+        output.at(i) = SBoxTransformation(output.at(i));
     }
+    return output;
 }
 
 vector<bitset<8>> hashStr(string &userInputStr) {
-    vector<bitset<8>> randomStr, userInput, output(32);
+    vector<bitset<8>> randomStr, userInput, output;
+    unsigned long int oneCount = 0;
 
-    readInput(randomStr, pseudo_random_256b);
     readInput(userInput, userInputStr);
-    magnify(userInput);
+    oneCount = magnify(userInput);
     userInput = TransformTo256(userInput);
-    joinTwoArr(userInput, output);
+
+    oneCount = oneCount * oneCount * 41947 % 256;
+    readInput(randomStr, Strs[oneCount]);
+
+    output = joinTwoArr(userInput, randomStr);
 
     return output;
 }

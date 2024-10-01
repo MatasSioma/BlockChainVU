@@ -133,7 +133,7 @@ vector<bitset<8>> TransformTo256(vector<bitset<8>> arr) {
             i++;
         }
     }
-    
+
     if(arr.size() == 32) {
         return arr;
     }
@@ -154,19 +154,19 @@ vector<bitset<8>> TransformTo256(vector<bitset<8>> arr) {
     return TransformTo256(newArr);
 }
 
-//Mazas pokytis reiskia daug (avalanche effect) (teoriskai)
+//Mazas pokytis reiskia daug (avalanche effect)
 void magnify(vector<bitset<8>> &arr) {
     for (auto it = arr.begin(); it != arr.end(); it++) {
-        *it = it->to_ulong() * it->to_ulong() % 256;
-        
+        *it = SBoxTransformation(*it);
+
         int index = distance(arr.begin(), it);
         auto oppositeIt = (arr.end() - (index + 1));
-        *oppositeIt = (*oppositeIt^*it).flip();
 
-        if(oppositeIt == it) {
+        *oppositeIt = SBoxTransformation((*oppositeIt ^ *it).flip());
+
+        if (oppositeIt == it) {
             bitset<8> checker("10101010");
-            for(int i = 0; i < arr.size() % 2; i++) checker.flip();
-            *oppositeIt = *oppositeIt & checker;
+            *oppositeIt = SBoxTransformation((*oppositeIt ^ checker).flip());
         }
     }
 }
@@ -174,7 +174,11 @@ void magnify(vector<bitset<8>> &arr) {
 void joinTwoArr(vector<bitset<8>> &arr, vector<bitset<8>> &output) {
     int i = 0;
     for (auto it = output.begin(); it != output.end(); it++) {
-        *it = (*it^arr[i]);
+        auto leftValue = it->to_ulong();
+        auto rightValue = arr[i].to_ulong();
+        *it = bitset<8>(((leftValue ^ rightValue) + ((rightValue << 3) | (rightValue >> 5))) % 256);
+        *it = SBoxTransformation(*it);
+
         i++;
     }
 }
@@ -184,10 +188,9 @@ vector<bitset<8>> hashStr(string &userInputStr) {
 
     readInput(randomStr, pseudo_random_256b);
     readInput(userInput, userInputStr);
+    magnify(userInput);
     userInput = TransformTo256(userInput);
-
     joinTwoArr(userInput, output);
-    magnify(output);
 
     return output;
 }

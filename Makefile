@@ -1,6 +1,5 @@
-main: poros.cpp main.cpp
+main: hash.cpp main.cpp
 	g++ -O1 main.cpp hash.cpp -o main
-
 
 konstitucija: konstitucija.cpp hash.cpp
 	g++ -O1 konstitucija.cpp hash.cpp -o konstitucija

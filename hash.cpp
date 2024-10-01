@@ -9,7 +9,6 @@
 #include <math.h>
 #include <algorithm>
 
-#include "timer.h"
 #include "hash.h"
 
 using namespace std;
@@ -122,14 +121,20 @@ void readInput(vector<bitset<8>> &arr, string inputText) {
     arr.shrink_to_fit();
 }
 
+bitset<8> SBoxTransformation(bitset<8> &input) {
+    return ((input << 1) ^ (input >> 3)) ^ ((input << 4) & (input >> 2));
+}
+
 vector<bitset<8>> TransformTo256(vector<bitset<8>> arr) {
     if(arr.size() % 32 != 0) {
         int i = 0;
         while (arr.size() % 32 != 0) {
-            arr.push_back(arr.at(i).flip());
+            arr.push_back(SBoxTransformation(arr.at(i).flip()));
             i++;
         }
-    } if (arr.size() == 32) {
+    }
+    
+    if(arr.size() == 32) {
         return arr;
     }
 
@@ -137,7 +142,9 @@ vector<bitset<8>> TransformTo256(vector<bitset<8>> arr) {
     newArr.reserve(32);
 
     for (int i = 0; i < 32; i++) {
-        newArr.push_back(arr.at(i) ^ arr.at(i + 32));
+        auto leftValue = arr.at(i).to_ulong();
+        auto rightValue = arr.at(i + 32).to_ulong();
+        newArr.push_back(bitset<8>(((leftValue ^ rightValue) + ((leftValue << 1) | (rightValue >> 1))) % 256));
     }
 
     if (arr.size() > 64) {
@@ -145,7 +152,6 @@ vector<bitset<8>> TransformTo256(vector<bitset<8>> arr) {
     }
 
     return TransformTo256(newArr);
-
 }
 
 //Mazas pokytis reiskia daug (avalanche effect) (teoriskai)
@@ -179,7 +185,7 @@ vector<bitset<8>> hashStr(string &userInputStr) {
     readInput(randomStr, pseudo_random_256b);
     readInput(userInput, userInputStr);
     userInput = TransformTo256(userInput);
-    magnify(userInput);
+
     joinTwoArr(userInput, output);
     magnify(output);
 

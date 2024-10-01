@@ -23,8 +23,9 @@ void printBin(vector<bitset<8>> &input);
 void pasirinktiEiga(string msg, int* option, int max);
 string getInputString();
 string getKonstitucija(int lineNum);
-
 void readInput(vector<bitset<8>> &arr, string inputText);
+
+bitset<8> SBoxTransformation(bitset<8> &input);
 vector<bitset<8>> TransformTo256(vector<bitset<8>> arr);
 void magnify(vector<bitset<8>> &arr);
 void joinTwoArr(vector<bitset<8>> &arr, vector<bitset<8>> &output);

@@ -8,7 +8,7 @@ int main() {
     for(int lineNum : lineNums) {
         string input = getKonstitucija(lineNum);
         Timer hashavimas;
-        hashStr(input);
+        hashStr(input, "");
         cout << lineNum << ": "<< hashavimas.elapsed() << "s" << endl;
     }
 }

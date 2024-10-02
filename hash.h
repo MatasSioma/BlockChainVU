@@ -15,7 +15,7 @@
 
 using namespace std;
 
-const string Strs[256] = {
+const string Strs[193] = {
     "9bAiYSzBGgDAUhfsbYlG701ZhEUiZycO",
     "HIGw0N2lGozEXs9623aWvV1VddZrcK4Q",
     "KFPdgdUemuNI1QZ7PpNSE7jEcxNHuzAO",
@@ -209,69 +209,6 @@ const string Strs[256] = {
     "GaiEyTgMflGRS2HMNv7zUOf9hIBFyoam",
     "jOTgEykrbwamjH6gD8qyzcA5qg6YrLIT",
     "5okjOiYpuSnSDq3wRGkt5jfpzfWwTp74",
-    "5P68fj2muY5yDwoeleWb5AWsoTfUZFbL",
-    "bRTcIm21kcEFNR2lPzm40uCtncxy3jnv",
-    "YtMyFirc2JyMMf5lW3dntxOdwf0baBSH",
-    "u0t8y8UDpIh7sPwJD5wQaZZXr5TlxpsB",
-    "6a4khPfbUQVPKhRuMizYHjwmAPFUrZba",
-    "qF9i2Exhp3Vh1EQP6rFPFH1E7gLaGuhG",
-    "CwIZYHLxig0M7bEROzFobki0B8TYTDAA",
-    "vclW0zLytaeD7VXRygpPkClk8qqOZNhy",
-    "BzExFyY2nNdKDCRFnMcauavLrZ7KeCtP",
-    "boVTKujBK0sT9uS854nKERpCiIAREATs",
-    "vFOYEZqnTe5oSvmZiYTNAJQeSogRrwb4",
-    "LcGkoK5sRhOBQp4FM9pC1CPqfh1InSAz",
-    "73YiyT30z3q1eocyPuv4wZHhDigQejKT",
-    "KDT3f0LXO7VDCx1DCKi7I3sNIS0TvKIm",
-    "L8O0qLthj2glXJyVLwA1QRvw7IT9QdSs",
-    "b80g7LrTnqyIfntx0Tz6Vjt0VlaXVDiw",
-    "WxK4qyOd6yTuGVziYnCNFJoWn0rE2m4m",
-    "0RiAiVFbzJA0sZPmt3CFOyrBKrMkY1u5",
-    "FcovnJMkheWpmEtv1coCHuZ0yJ4tBQzS",
-    "eosV4dC5MYdc6zhoIgqRgJ51UwWKQosm",
-    "mgQQTQwRpQ8c8AB0va9ISOVDdCbqVZtU",
-    "LEVPMcQV73mUCKo4j1nfMtQbu8a8QQS5",
-    "JCTBNWBTExH7t4Hz9tTfnFI0x8XvvdpV",
-    "V8ZicsByz1h3Amupcq8eb4BlLx2AK5kZ",
-    "qqK7tGduauom5a6C6WrITDs1ZKUuEsiS",
-    "uioU3gn1Tr6XO9sJ0gDAby06N0IZTVWF",
-    "Dfgy6vPL7sBmo2jD4Gl3eWBbO73oXhL9",
-    "RBVXFUyRdnCd8TMlmxFKnQ9x4khH1Viz",
-    "SJKO7ryavNkRhAa9JVLKoIHkOvhXAlLw",
-    "7KuotqqsoL66xoluKbdOZnZH8Tt7xEbU",
-    "2CC0KytsBxgw4npM4o18C20QS5AOs0Qx",
-    "DC3N4buluy4ehZps1TcpFM11avHiTptp",
-    "nJNgBiEXloxVwmrPYJbPBwWqu7tZNevI",
-    "6JJRDA7GqAWl6iTvtahJ6XB0cLu5kUhY",
-    "qtBE3DWT9jxK7QFingGaAwnq103a28J8",
-    "VRg8aNGudi6BYtFNzojlFx20mr4LKjN2",
-    "oMEnpvpXA3wTaMBhdCwo9wsQH5c2slIZ",
-    "JxFscBGAPnFAf6bLYIvmjnoU1pdSdMoa",
-    "e92ICCF6TTW4SfN3KNLdaGG3DquHVosG",
-    "7i7ZnDJoqO4EiacPi68GkAEMJoXTbY4T",
-    "QVBNxoR3NzEaRTX0lunSTEBrWA5P7Pyh",
-    "j9AzyzTtQLtc58H6nHZOyUyDCZfnjY0T",
-    "sMCOuRXSYUmqxjQAtblODYMhEfFxLuB9",
-    "TojxWiamF6PGoI5F7MrWJGNViJIMAC5A",
-    "V3lS8rYlN7GS42r5rK7KnwGBvZ8Q3pbc",
-    "Wud8hdpbDi4GXtWyiyGIB5WE4YYuvThr",
-    "ugIVaWrerL5vDrx6BZ65MwW7bXKEpBbZ",
-    "8qs7eTvjgHEjdSWiLWvF8z95dW2SaYlX",
-    "OvZ4HW2Yjo6RJUcnzVxPGg4dhA7fhFbL",
-    "cwC1xO8pxk9033okwzlyaKDOheLaDFDb",
-    "L1reMwogtAYJyEfNPnMecIwgr0clyM3N",
-    "Z08smSrFhpsqXY3kWBvZvtXpfZ8Ietyu",
-    "4RzkomcBk2QkjEojtST3hOjHvYsPozmQ",
-    "6eiNP5T9x1sU3HxNd8KXNeJrpygjUrPH",
-    "tyoGWfP7ZZCwc9OWDjepGwOU2ob6qGEp",
-    "o6FHrOaISifffjSGz2HCjygVCOPJbT4J",
-    "zvX1MT8qtvNasyGCLVqwCLXmPyfoTvSK",
-    "QUbjOxbxdlWE6tSyqVopZr1O1dRJ1LmU",
-    "aMmaLHyjkxVsunR72z3XzCEg2q01b8u2",
-    "jJiTyPKSojlm3nmRGXCi6HpOXr282iEc",
-    "kBkFFvlanCVeSIXir5D4bN33QdqEJRxa",
-    "bkKi0F8YcnHPu1KsePumqehyq6tzAFjP",
-    "401zhVRr0v20SAkEFOiq7VKXA2qr8Mka"
 };
 
 void printHex(vector<bitset<8>> &input);
@@ -280,11 +217,11 @@ void printBin(vector<bitset<8>> &input);
 void pasirinktiEiga(string msg, int* option, int max);
 string getInputString();
 string getKonstitucija(int lineNum);
-void readInput(vector<bitset<8>> &arr, string inputText);
+void readInput(vector<bitset<8>> &arr, string inputText, unsigned int &k);
 
 bitset<8> SBoxTransformation(bitset<8> &input);
 vector<bitset<8>> TransformTo256(vector<bitset<8>> arr);
-unsigned long int magnify(vector<bitset<8>> &arr);
+unsigned int magnify(vector<bitset<8>> &arr);
 vector<bitset<8>> joinTwoArr(vector<bitset<8>> &arr, vector<bitset<8>> &arr2);
 
 vector<bitset<8>> hashStr(string &userInputStr);

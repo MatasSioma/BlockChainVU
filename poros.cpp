@@ -73,10 +73,12 @@ int HexDiff(vector<bitset<8>>& hash1, vector<bitset<8>>& hash2) {
     return diffCount;
 }
 
-void avalancheEffectTest() {
+void avalancheEffectTest(int timesToRun) {
+    for(int n = 0; n < timesToRun; n++) {
     srand(time(nullptr));
     int pairCount = 100000;
     int strLength = 500;
+    int matchingHashes = 0;
     vector<int> bitDissimilarity;
     vector<int> hexDissimilarity;
 
@@ -88,7 +90,14 @@ void avalancheEffectTest() {
 
         string modifiedString = baseString;
         int changeIndex = rand() % strLength;
-        modifiedString[changeIndex] = (char) rand() % 26 + 61;
+
+        while(true) {
+            char a = (char)rand() % 26 + 61;
+            if(a != modifiedString[changeIndex]) {
+                modifiedString[changeIndex] = a;
+                break;
+            }
+        }
 
         vector<bitset<8>> hash1 = hashStr(baseString);
         vector<bitset<8>> hash2 = hashStr(modifiedString);
@@ -107,10 +116,9 @@ void avalancheEffectTest() {
         maxHexDiff = max(maxHexDiff, hexDiff);
         totalHexDiff += hexDiff;
 
-        // if(bitDiff == 0 || hexDiff == 0) {
-        //     printHex(hash1);
-        //     printHex(hash2);
-        // }
+        if(bitDiff == 0 || hexDiff == 0) {
+            matchingHashes++;
+        }
     }
 
     double avgBitDiff = static_cast<double>(totalBitDiff) / pairCount;
@@ -125,11 +133,15 @@ void avalancheEffectTest() {
     cout << "Minimum: " << minHexDiff << " hex skaitmenys" << endl;
     cout << "Maximum: " << maxHexDiff << " hex skaitmenys" << endl;
     cout << "Average: " << avgHexDiff << " hex skaitmenys" << endl;
+
+    cout << "\nVienodų hash'ų kiekis: " << matchingHashes << endl;
+    }
 }
 
 int main() {
     // matchingPairsTest();
-    avalancheEffectTest();
+    avalancheEffectTest(5);
+
 
     // string str1 = "adf";
     // string str2 = "adg";

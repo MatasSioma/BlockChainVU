@@ -14,13 +14,13 @@
 using namespace std;
 
 void printHex(vector<bitset<8>> &input) {
-    cout << endl << "Hex reprezentacija:" << endl << "0x";
+    cout << "Hex reprezentacija:" << endl << "0x";
     for(const auto& byte : input) cout << hex << setw(2) << setfill('0') << byte.to_ulong();
     cout << endl;
 }
 
 void printBin(vector<bitset<8>> &input) {
-    cout << endl << "Dvejatainė reprezentacija:" << endl;
+    cout << "Dvejatainė reprezentacija:" << endl;
     for(const auto& byte : input) cout << byte.to_string() << "'";
     cout << endl;
 }
@@ -108,7 +108,7 @@ string getKonstitucija(int lineNum) {
 
 }
 
-void readInput(vector<bitset<8>> &arr, string inputText) {
+void readInput(vector<bitset<8>> &arr, string inputText, unsigned int &k) {
     if(inputText == "") {
         vector<bitset<8>> empty(32);
         arr = empty;
@@ -117,6 +117,7 @@ void readInput(vector<bitset<8>> &arr, string inputText) {
     for(char c : inputText) {
         bitset<8> b((unsigned char)c);
         arr.push_back(b);
+        k += b.test(0) + b.test(1)*21 + b.test(2)*32 + b.test(3)*43 + b.test(4)*54 + b.test(5)*65 + b.test(6)*76 + b.test(7)*87;
     }
     arr.shrink_to_fit();
 }
@@ -155,24 +156,18 @@ vector<bitset<8>> TransformTo256(vector<bitset<8>> arr) {
 }
 
 //Mazas pokytis reiskia daug (avalanche effect)
-unsigned long int magnify(vector<bitset<8>> &arr) {
-    unsigned long int count = 0;
+unsigned int magnify(vector<bitset<8>> &arr) {
+    unsigned int k = 0;
     for (auto it = arr.begin(); it != arr.end(); it++) {
         int index = distance(arr.begin(), it);
         *it = ((*it).to_ulong() * (*it).to_ulong() + index) % 256;
-        count += it->count();
+        k += it->count();
 
         auto oppositeIt = (arr.end() - (index + 1));
         *oppositeIt = SBoxTransformation((*oppositeIt ^ *it).flip());
-
-        if (oppositeIt == it) {
-            bitset<8> checker("10101010");
-            *oppositeIt = SBoxTransformation((*oppositeIt ^ checker).flip());
-        }
-        count += oppositeIt->count();
-
+        k += oppositeIt->count();
     }
-    return count;
+    return k;
 }
 
 vector<bitset<8>> joinTwoArr(vector<bitset<8>> &arr, vector<bitset<8>> &arr2) {
@@ -188,14 +183,13 @@ vector<bitset<8>> joinTwoArr(vector<bitset<8>> &arr, vector<bitset<8>> &arr2) {
 
 vector<bitset<8>> hashStr(string &userInputStr) {
     vector<bitset<8>> randomStr, userInput, output;
-    unsigned long int oneCount = 0;
+    unsigned int k = 0;
 
-    readInput(userInput, userInputStr);
-    oneCount = magnify(userInput);
+    readInput(userInput, userInputStr, k);
+    k += magnify(userInput);
     userInput = TransformTo256(userInput);
-
-    oneCount = oneCount * oneCount * 41947 % 256;
-    readInput(randomStr, Strs[oneCount]);
+    k = k * 2 * 3 % 193;
+    readInput(randomStr, Strs[k], k);
 
     output = joinTwoArr(userInput, randomStr);
 

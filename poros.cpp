@@ -35,7 +35,7 @@ void matchingPairsTest() {
         for(int line = 0; line < lineNum; line++) {
             string str1 = generateRandomString(strLen[n]);
             string str2 = generateRandomString(strLen[n]);
-            if(hashToString(hashStr(str1)) == hashToString(hashStr(str2))) {
+            if(hashToString(hashStr(str1, "")) == hashToString(hashStr(str2, ""))) {
                 matching++;
             }
         }
@@ -99,8 +99,8 @@ void avalancheEffectTest(int timesToRun) {
             }
         }
 
-        vector<bitset<8>> hash1 = hashStr(baseString);
-        vector<bitset<8>> hash2 = hashStr(modifiedString);
+        vector<bitset<8>> hash1 = hashStr(baseString, "");
+        vector<bitset<8>> hash2 = hashStr(modifiedString, "");
 
         int bitDiff = BitDiff(hash1, hash2);
         int hexDiff = HexDiff(hash1, hash2);
@@ -140,7 +140,7 @@ void avalancheEffectTest(int timesToRun) {
 
 int main() {
     // matchingPairsTest();
-    avalancheEffectTest(5);
+    avalancheEffectTest(1);
 
 
     // string str1 = "adf";

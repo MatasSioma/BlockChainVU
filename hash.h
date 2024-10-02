@@ -211,11 +211,12 @@ const string Strs[193] = {
     "5okjOiYpuSnSDq3wRGkt5jfpzfWwTp74",
 };
 
-void printHex(vector<bitset<8>> &input);
-void printBin(vector<bitset<8>> &input);
+void printHex(vector<bitset<8>> input);
+void printBin(vector<bitset<8>> input);
 
 void pasirinktiEiga(string msg, int* option, int max);
 string getInputString();
+string getSalt();
 string getKonstitucija(int lineNum);
 void readInput(vector<bitset<8>> &arr, string inputText, unsigned int &k);
 
@@ -224,6 +225,6 @@ vector<bitset<8>> TransformTo256(vector<bitset<8>> arr);
 unsigned int magnify(vector<bitset<8>> &arr);
 vector<bitset<8>> joinTwoArr(vector<bitset<8>> &arr, vector<bitset<8>> &arr2);
 
-vector<bitset<8>> hashStr(string &userInputStr);
+vector<bitset<8>> hashStr(string &userInputStr, string salt);
 
 #endif

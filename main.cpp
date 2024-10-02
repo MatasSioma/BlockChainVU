@@ -4,6 +4,6 @@ using namespace std;
 
 int main() {
     string input = getInputString();
-    vector<bitset<8>> output = hashStr(input);
-    printHex(output);
+    string salt = getSalt();
+    printHex(hashStr(input, salt));
 }

@@ -13,13 +13,13 @@
 
 using namespace std;
 
-void printHex(vector<bitset<8>> &input) {
+void printHex(vector<bitset<8>> input) {
     cout << "Hex reprezentacija:" << endl << "0x";
     for(const auto& byte : input) cout << hex << setw(2) << setfill('0') << byte.to_ulong();
     cout << endl;
 }
 
-void printBin(vector<bitset<8>> &input) {
+void printBin(vector<bitset<8>> input) {
     cout << "Dvejatainė reprezentacija:" << endl;
     for(const auto& byte : input) cout << byte.to_string() << "'";
     cout << endl;
@@ -91,6 +91,18 @@ string getInputString() {
             return result;
         }
     }
+}
+
+string getSalt() {
+    string salt; 
+    cout << "Įveskite \"druską\" (ENTER - be druskos): ";
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    getline(cin, salt);
+    cout << endl;
+
+    return salt;
 }
 
 string getKonstitucija(int lineNum) {
@@ -181,7 +193,7 @@ vector<bitset<8>> joinTwoArr(vector<bitset<8>> &arr, vector<bitset<8>> &arr2) {
     return output;
 }
 
-vector<bitset<8>> hashStr(string &userInputStr) {
+vector<bitset<8>> hashStr(string &userInputStr, string salt) {
     vector<bitset<8>> randomStr, userInput, output;
     unsigned int k = 0;
 
@@ -190,6 +202,13 @@ vector<bitset<8>> hashStr(string &userInputStr) {
     userInput = TransformTo256(userInput);
     k = k * 2 * 3 % 193;
     readInput(randomStr, Strs[k], k);
+
+    if(!salt.empty()) {
+        vector<bitset<8>> saltBits;
+        readInput(saltBits, salt, k);
+        saltBits = TransformTo256(saltBits);
+        randomStr = joinTwoArr(saltBits, randomStr);
+    }
 
     output = joinTwoArr(userInput, randomStr);
 

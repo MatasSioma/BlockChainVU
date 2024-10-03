@@ -1,4 +1,7 @@
 # 0.1
+
+***v0.1.1 Pataisomi 6 eksperimento rezultatai, užtinkrinama kad main.cpp naudoja hashStr() o ne kas buvo prieštai... (kaip atskira hashStr versija)***
+
 userInput := getInputString()\
 Iš vartotojo paprašo įvesties konsolėje arba failo pavadimo iš kur imti informaciją, kurią reikia hashuoti.
 
@@ -51,18 +54,20 @@ Paleidus testą 5 kart, sutampančių hash'ų visada - 0
 6 Eksperimentas: poros.cpp AvalancheEffectTest()\
 Bitų lygio Nepanašumas:\
 Minimum: 0 bitai\
-Maximum: 25 bitai\
-Average: 5.43657 bitai
+Maximum: 23 bitai\
+Average: 5.04631 bitai
 
 Hex lygio Nepanašumas:\
 Minimum: 0 hex skaitmenys\
-Maximum: 3 hex skaitmenys\
-Average: 0.08029 hex skaitmenys
+Maximum: 8 hex skaitmenys\
+Average: 2.60395 hex skaitmenys
+
+***Testas v0.1 turėjo problemų. Po pakeitumų v0.1.1 Hex lygio nepanašumas yra tikslus.***
 
 Taigi, pakeitus "mažą" dalį įvesties hash'as nepasikeičia kardinaliai. T.y. Matomi pasikartojantys byte'ai.
 
 7:
 Stiprybės - atitinka "bazinius" reikalivimus: ilgis visada 256, funkcija deterministinė, O(2nlog(n)) - ne pats geriausias, bet ir ne blogiausias variantas.
 
-Trūkumai - pakeitus mažą dalį įvesties, išvestis nepasikeičia kardinaliai - neatitinka "avalanche effect" reikalavimui Kaltininkai - TranformTo256, magnify() funkcijos....
+Trūkumai - pakeitus mažą dalį įvesties, išvestis nepasikeičia kardinaliai - neatitinka "avalanche effect" reikalavimui.
 

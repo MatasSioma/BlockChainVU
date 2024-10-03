@@ -180,6 +180,7 @@ vector<bitset<8>> hashStr(string &userInputStr) {
     readInput(userInput, userInputStr);
     userInput = TransformTo256(userInput);
     magnify(userInput);
+    joinTwoArr(randomStr, userInput);
     joinTwoArr(userInput, output);
     magnify(output);
 

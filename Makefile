@@ -9,3 +9,9 @@ tests: tests.cpp hash.cpp
 
 compare: compare.cpp hash.cpp
 	g++ -O1 compare.cpp hash.cpp SHA/md5.cpp SHA/sha1.cpp SHA/sha256.cpp -o compare
+
+all:
+	make main
+	make konstitucija
+	make tests
+	make compare

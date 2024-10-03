@@ -84,6 +84,8 @@ Nežinau kaip tai pratestuoti bet manau kad mano funkcija yra nebloga puzzle-fri
 Trūkumai - Pasitaiko kad pakeitus vieną simbolį hash'ai sutaps
 
 ### Papildomi testai
+Funkcijų implementacijos paimtos iš - http://www.zedwood.com/article/cpp-sha256-function
+
 Palyginimas su SHA256 algoritmu: compare.cpp\
 make compare && ./compare
 

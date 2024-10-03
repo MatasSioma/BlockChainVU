@@ -151,18 +151,20 @@ vector<bitset<8>> TransformTo256(vector<bitset<8>> arr) {
         return arr;
     }
 
-    vector<bitset<8>> newArr;
-    newArr.reserve(32);
+    int arrsize = arr.size()/2;
 
-    for (int i = 0; i < 32; i++) {
+    vector<bitset<8>> newArr;
+    newArr.reserve(arrsize);
+    for (int i = 0; i < arrsize; i++) {
         auto leftValue = arr.at(i).to_ulong();
-        auto rightValue = arr.at(i + 32).to_ulong();
+        auto rightValue = arr.at(i + arrsize).to_ulong();
         newArr.push_back(bitset<8>(((leftValue ^ rightValue) + ((leftValue << 1) | (rightValue >> 1))) % 256));
     }
-
-    if (arr.size() > 64) {
-        newArr.insert(newArr.end(), arr.begin() + 64, arr.end());
-    }
+    // // arba
+    // vector<bitset<8>> newArr(arrsize);
+    // std::vector<bitset<8>> firstHalf(arr.begin(), arr.begin() + arrsize);
+    // std::vector<bitset<8>> secondHalf(arr.begin() + arrsize, arr.end());
+    // newArr = joinTwoArr(firstHalf, secondHalf);
 
     return TransformTo256(newArr);
 }
@@ -183,8 +185,11 @@ unsigned int magnify(vector<bitset<8>> &arr) {
 }
 
 vector<bitset<8>> joinTwoArr(vector<bitset<8>> &arr, vector<bitset<8>> &arr2) {
-    vector<bitset<8>> output(32);
-    for(int i = 0; i < 32; i++) {
+    if(arr.size() != arr2.size()) {
+        throw invalid_argument("Masyvų dydis nevienodas.");
+    }
+    vector<bitset<8>> output(arr.size());
+    for(int i = 0; i < arr.size(); i++) {
         auto leftValue = arr[i].to_ulong();
         auto rightValue = arr2[i].to_ulong();
         output.at(i) = bitset<8>(((leftValue ^ rightValue) + ((rightValue << 3) | (rightValue >> 5)) + 31) % 256);

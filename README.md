@@ -51,11 +51,11 @@ Tuomet apjungiame vartotojo 32 byte'ų ilgio masyvą su **konstantiniu (druskuot
 1-2 eksperimentas:\
 Panaudojant testinius failus "duomenys" direktorijoje, hash'ai yra deterministiniai ir visada yra 256 bit'ų ilgio. make main && .main pora kartų su ta pačia įvestimi.
 
-3 eksperimentas v0.2:
-![3 statistika](v0.2-konstitucija.png)
+3 eksperimentas v0.2: make konstitucija && ./konstitucija
+![3 v0.2 statistika](v0.2-konstitucija.png)
 
 3 eksperimentas v0.1:
-![3 statistika](v0.1-konstitucija.png)
+![3 v0.1 statistika](v0.1-konstitucija.png)
 
 Vaizduojami logoritminiai (base 2) ir tiesiniai grafikas (x ašies reikšmės)
 
@@ -78,7 +78,8 @@ Average: 59.1298 hex skaitmenys
 
 Vienodų hash'ų kiekis: 0 - kartais pasitaiko kad 1-2 hash'ai yra vienodi -> ir min skirtumas (nepanašumas) = 0
 
-7: Stiprybės - atitinka "bazinius" reikalivimus: ilgis visada 256, funkcija deterministinė, avalanche effect'as vidutinškai geras ~49% skirtingumas pakeitus tik vieną simbolį, bijau suklysti - bet sudėtingumas: O(kn) - funkcija yra tiesinė, kur k - kažkoks factor'ius. Nežinau kaip tai pratestuoti bet manau kad mano funkcija yra nebloga puzzle-friendliness ir hiding sąvybių atžvilgiu, dėl naudojamų "high-min entropy" konstantų Strs[] masyve. Bet galbūt ir klystu.
+7: Stiprybės - atitinka "bazinius" reikalivimus: ilgis visada 256, funkcija deterministinė, avalanche effect'as dažinausiai geras, on average: ~49% skirtingumas pakeitus tik vieną simbolį. Bijau suklysti - bet sudėtingumas: O(kn) - funkcija yra tiesinė, kur k - kažkoks factor'ius.\
+Nežinau kaip tai pratestuoti bet manau kad mano funkcija yra nebloga puzzle-friendliness ir hiding sąvybių atžvilgiu, dėl naudojamų "high-min entropy" konstantų Strs[] masyve.
 
 Trūkumai - Pasitaiko kad pakeitus vieną simbolį hash'ai sutaps
 
